@@ -71,6 +71,7 @@ const SignInScreen = () => {
                 className="p-4 bg-white rounded-full mb-3"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
+                keyboardType="email-address"
                 placeholder="E.g. expense@gmail.com"
                 autoCapitalize="none"
               />

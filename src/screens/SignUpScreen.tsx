@@ -75,6 +75,7 @@ const SignUpScreen = () => {
                 onChangeText={(text) => setEmail(text)}
                 placeholder="E.g. expense@gmail.com"
                 autoCapitalize="none"
+                keyboardType="email-address"
               />
               <Text className={`${Colors.heading} text-lg font-bold`}>
                 Password

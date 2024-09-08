@@ -10,7 +10,6 @@ interface ExpenseCardProps extends ExpenseProps {
 }
 
 const ExpenseCard: React.FC<ExpenseCardProps> = ({
-  id,
   title,
   amount,
   category = "other",

@@ -6,6 +6,7 @@ import AppRouter from "./src/navigation/AppRouter";
 import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
 import Toast from "react-native-toast-message";
+import "react-native-reanimated";
 
 export default function App() {
   return (

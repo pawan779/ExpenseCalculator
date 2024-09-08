@@ -55,7 +55,7 @@ const TripExpensesScreen: React.FC<TripExpensesProps> = (props) => {
 
   return (
     <ScreenWrapper>
-      <View className="px-4">
+      <View className="px-4 flex-1">
         <View className="relative mt-5">
           <View className="absolute top-0 left-0 z-10">
             <BackButton />
@@ -84,7 +84,7 @@ const TripExpensesScreen: React.FC<TripExpensesProps> = (props) => {
           />
         </View>
 
-        <View className="space-y-4">
+        <View className="space-y-4 flex-1">
           <View className="flex-row justify-between items-center">
             <Text className={`${Colors.heading} font-bold text-xl`}>
               Recent Trips
@@ -99,17 +99,17 @@ const TripExpensesScreen: React.FC<TripExpensesProps> = (props) => {
             </TouchableOpacity>
           </View>
 
-          <View style={{ height: 430 }}>
-            <FlatList
-              data={expenses}
-              ListEmptyComponent={
-                <EmptyList message="You haven't recorded any expenses yet" />
-              }
-              showsVerticalScrollIndicator={false}
-              keyExtractor={(items) => items.id.toString()}
-              renderItem={({ item }) => <ExpenseCard {...item} />}
-            />
-          </View>
+          <FlatList
+            data={expenses}
+            contentContainerStyle={{ flexGrow: 1 }}
+            style={{ flex: 1 }}
+            ListEmptyComponent={
+              <EmptyList message="You haven't recorded any expenses yet" />
+            }
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(items) => items.id.toString()}
+            renderItem={({ item }) => <ExpenseCard {...item} />}
+          />
         </View>
       </View>
     </ScreenWrapper>

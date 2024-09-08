@@ -9,7 +9,7 @@ export type VisitedPlacesProps = {
 export type ExpenseProps = {
   id: number;
   title: string;
-  amount: number;
+  amount: string;
   category: Category;
 };
 
@@ -18,4 +18,10 @@ export type Category = keyof typeof categoryBG;
 export type CategoryProps = {
   title: string;
   value: string;
+};
+
+export type CatProps = {
+  label: string;
+  value: number;
+  color: string;
 };

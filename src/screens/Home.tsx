@@ -23,7 +23,7 @@ const Home = () => {
   const [trips, setTrips] = React.useState<VisitedPlacesProps[]>([]);
 
   const { user } = useSelector((state: any) => state.user);
-  const navigaiton: any = useNavigation();
+  const navigation: any = useNavigation();
   const isFocused = useIsFocused();
 
   const fetchTrips = async () => {
@@ -69,38 +69,36 @@ const Home = () => {
         />
       </View>
 
-      <View className="px-4 space-y-4">
+      <View className="px-4 space-y-4 flex-1">
         <View className="flex-row justify-between items-center">
           <Text className={`${Colors.heading} font-bold text-xl`}>
             Recent Trips
           </Text>
           <TouchableOpacity
-            onPress={() => navigaiton.navigate("AddTrip")}
+            onPress={() => navigation.navigate("AddTrip")}
             className="p-2 px-3 bg-white border border-gray-200 rounded-full"
           >
             <Text className={Colors.heading}>Add Trip</Text>
           </TouchableOpacity>
         </View>
-
-        <View style={{ height: 430 }}>
-          <FlatList
-            data={trips}
-            numColumns={2}
-            columnWrapperStyle={{ justifyContent: "space-between" }}
-            ListEmptyComponent={
-              <EmptyList message="You haven't recorded any trips yet" />
-            }
-            className="mx-1"
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(items) => items.id.toString()}
-            renderItem={({ item }) => (
-              <RecentTrips
-                onPress={() => navigaiton.navigate("TripExpenses", { ...item })}
-                {...item}
-              />
-            )}
-          />
-        </View>
+        <FlatList
+          data={trips}
+          numColumns={2}
+          columnWrapperStyle={{ justifyContent: "space-between" }}
+          ListEmptyComponent={
+            <EmptyList message="You haven't recorded any trips yet" />
+          }
+          className="mx-1"
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(items) => items.id.toString()}
+          renderItem={({ item }) => (
+            <RecentTrips
+              onPress={() => navigation.navigate("TripExpenses", { ...item })}
+              {...item}
+            />
+          )}
+          contentContainerStyle={{ paddingBottom: 20, flexGrow: 1 }}
+        />
       </View>
     </ScreenWrapper>
   );
