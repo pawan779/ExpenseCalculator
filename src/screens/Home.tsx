@@ -111,7 +111,12 @@ const Home = () => {
             className="mx-1"
             showsVerticalScrollIndicator={false}
             keyExtractor={(items) => items.id.toString()}
-            renderItem={({ item }) => <RecentTrips {...item} />}
+            renderItem={({ item }) => (
+              <RecentTrips
+                onPress={() => navigaiton.navigate("TripExpenses", { ...item })}
+                {...item}
+              />
+            )}
           />
         </View>
       </View>

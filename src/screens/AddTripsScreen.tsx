@@ -47,7 +47,7 @@ const AddTripsScreen = () => {
               Which Country?
             </Text>
             <TextInput
-              className="p-4 bg-white rounded-full mb-3"
+              className="p-4 bg-white rounded-full mb-3 border-gray-500"
               value={country}
               onChangeText={(text) => setCountry(text)}
               placeholder="E.g. France"
