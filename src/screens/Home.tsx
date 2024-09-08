@@ -52,7 +52,7 @@ const Home = () => {
     <ScreenWrapper>
       <View className="flex-row justify-between items-center p-4">
         <Text className={`${Colors.heading} font-bold text-3xl shadow-sm`}>
-          Expenses
+          TravelTrackr
         </Text>
         <TouchableOpacity
           className="p-2 px-3 bg-white border border-gray-200 rounded-full"

@@ -19,6 +19,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { auth, expensesRef, tripsRef } from "../config/firebase";
 import { query, where } from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
+import Entypo from "@expo/vector-icons/Entypo";
 
 interface TripExpensesProps {
   route: {
@@ -65,6 +66,15 @@ const TripExpensesScreen: React.FC<TripExpensesProps> = (props) => {
           <Text className={`${Colors.heading} text-xs  text-center`}>
             {country}
           </Text>
+
+          <TouchableOpacity
+            className="absolute top-0 right-0 z-10"
+            onPress={() =>
+              navigaiton.navigate("Chart", { ...expenses, place, country })
+            }
+          >
+            <Entypo name="pie-chart" size={24} color="black" />
+          </TouchableOpacity>
         </View>
 
         <View className="flex-row justify-center items-center rounded-xl  mb-4">

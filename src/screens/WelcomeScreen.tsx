@@ -19,7 +19,7 @@ const WelcomeScreen = () => {
           <Text
             className={`${Colors.heading} text-center font-bold text-4xl mb-10`}
           >
-            Expense
+            TravelTrackr
           </Text>
 
           <TouchableOpacity

@@ -12,6 +12,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slices/userSlice";
+import ChartScreen from "../screens/ChartScreen";
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,7 @@ const AppRouter = () => {
         <Stack.Screen name="AddExpense" component={AddExpenseScreen} />
         <Stack.Screen name="AddTrip" component={AddTripsScreen} />
         <Stack.Screen name="TripExpenses" component={TripExpensesScreen} />
+        <Stack.Screen name="Chart" component={ChartScreen} />
       </Stack.Navigator>
     );
   } else {
