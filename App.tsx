@@ -9,11 +9,10 @@ export default function App() {
   return (
     <View className="flex-1 ">
       <StatusBar style="auto" />
-      <ScreenWrapper>
-        <NavigationContainer>
-          <AppRouter />
-        </NavigationContainer>
-      </ScreenWrapper>
+
+      <NavigationContainer>
+        <AppRouter />
+      </NavigationContainer>
     </View>
   );
 }
