@@ -17,6 +17,8 @@ import { VisitedPlacesProps } from "../types/Types";
 import { addDoc, collection } from "firebase/firestore";
 import { expensesRef } from "../config/firebase";
 import LoadingComponent from "../components/loadingComponent";
+import { showToastMessage } from "../components/toastMessage";
+import Toast from "react-native-toast-message";
 
 interface TripExpensesProps {
   route: {
@@ -49,12 +51,13 @@ const AddExpensesScreen: React.FC<TripExpensesProps> = (props) => {
           // Redirect to home
           navigation.goBack();
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error adding document: ", error);
         setLoading(false);
+        showToastMessage(error.message, "error");
       }
     } else {
-      // Show error message
+      showToastMessage("All fields are required", "error");
     }
   };
 
@@ -97,6 +100,7 @@ const AddExpensesScreen: React.FC<TripExpensesProps> = (props) => {
                 value={amount}
                 onChangeText={(text) => setAmount(text)}
                 placeholder="E.g. 200"
+                keyboardType="number-pad"
               />
               <View className="mx-2 space-x-2">
                 <Text className="text-lg font-bold">Category</Text>
@@ -137,6 +141,7 @@ const AddExpensesScreen: React.FC<TripExpensesProps> = (props) => {
           </View>
         </View>
       </ScrollView>
+      <Toast />
     </ScreenWrapper>
   );
 };
