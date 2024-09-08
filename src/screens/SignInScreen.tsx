@@ -1,20 +1,39 @@
 import React from "react";
-import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import ScreenWrapper from "../components/screenWrapper";
 import { Colors } from "../../theme";
 import BackButton from "../components/backButton";
-import { useNavigation } from "@react-navigation/native";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { useSelector } from "react-redux";
+import LoadingComponent from "../components/loadingComponent";
+import { useDispatch } from "react-redux";
+import { setUserLoading } from "../redux/slices/userSlice";
 
 const SignInScreen = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const navigation: any = useNavigation();
+  const { userLoading } = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
 
   const handleAddTrip = async () => {
     if (email && password) {
-      await signInWithEmailAndPassword(auth, email, password);
+      try {
+        dispatch(setUserLoading(true));
+        await signInWithEmailAndPassword(auth, email, password);
+        dispatch(setUserLoading(false));
+      } catch (error: any) {
+        console.log(error);
+        dispatch(setUserLoading(false));
+        Alert.alert("Error", error.message);
+      }
     } else {
       // Show error message
       console.log("Please fill all fields");
@@ -65,15 +84,19 @@ const SignInScreen = () => {
           </View>
         </View>
         <View>
-          <TouchableOpacity
-            style={{ backgroundColor: Colors.button }}
-            className="my-6 rounded-full p-3 shadow-sm mx-2"
-            onPress={handleAddTrip}
-          >
-            <Text className="text-center text-white text-lg font-bold">
-              Sign In
-            </Text>
-          </TouchableOpacity>
+          {userLoading ? (
+            <LoadingComponent />
+          ) : (
+            <TouchableOpacity
+              style={{ backgroundColor: Colors.button }}
+              className="my-6 rounded-full p-3 shadow-sm mx-2"
+              onPress={handleAddTrip}
+            >
+              <Text className="text-center text-white text-lg font-bold">
+                Sign In
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </ScreenWrapper>
