@@ -19,14 +19,14 @@ const AppRouter = () => {
   const { user } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
+  console.log("user", user);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
       if (u) {
-        dispatch(
-          setUser({ email: u.email, token: u.stsTokenManager.accessToken })
-        );
+        dispatch(setUser({ email: u.email, uid: u.uid }));
       } else {
-        dispatch(setUser({ email: "", token: "" })); // Clear user if signed out
+        dispatch(setUser({ email: "", uid: "" })); // Clear user if signed out
       }
     });
 
@@ -34,7 +34,7 @@ const AppRouter = () => {
     return () => unsubscribe();
   }, [dispatch]);
 
-  if (user?.token) {
+  if (user?.uid) {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={Home} />

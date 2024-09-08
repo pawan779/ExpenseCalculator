@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -12,69 +12,42 @@ import { Colors } from "../../theme";
 import { VisitedPlacesProps } from "../types/Types";
 import RecentTrips from "../components/RecentTrips";
 import EmptyList from "../components/emptyList";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { signOut } from "firebase/auth";
-import { auth } from "../config/firebase";
-
-const items: VisitedPlacesProps[] = [
-  {
-    id: 1,
-    place: "Toronto",
-    country: "Canada",
-  },
-  {
-    id: 2,
-    place: "New York",
-    country: "USA",
-  },
-  {
-    id: 3,
-    place: "London",
-    country: "UK",
-  },
-  {
-    id: 4,
-    place: "Paris",
-    country: "France",
-  },
-  {
-    id: 5,
-    place: "Tokyo",
-    country: "Japan",
-  },
-  {
-    id: 6,
-    place: "Sydney",
-    country: "Australia",
-  },
-  {
-    id: 7,
-    place: "Dubai",
-    country: "UAE",
-  },
-  {
-    id: 8,
-    place: "Singapore",
-    country: "Singapore",
-  },
-  {
-    id: 9,
-    place: "Hong Kong",
-    country: "China",
-  },
-  {
-    id: 10,
-    place: "Mumbai",
-    country: "India",
-  },
-];
-
-const handleSigbOut = async () => {
-  await signOut(auth);
-};
+import { auth, tripsRef } from "../config/firebase";
+import { query, where } from "firebase/firestore";
+import { getDocs } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const [trips, setTrips] = React.useState<VisitedPlacesProps[]>([]);
+
+  const { user } = useSelector((state: any) => state.user);
   const navigaiton: any = useNavigation();
+  const isFocused = useIsFocused();
+
+  const fetchTrips = async () => {
+    const q = query(tripsRef, where("userId", "==", user.uid));
+    const querySnapshot = await getDocs(q);
+    let data: VisitedPlacesProps[] = [];
+
+    querySnapshot.forEach((doc) => {
+      data.push({ ...doc.data(), id: doc.id });
+    });
+
+    setTrips(data);
+  };
+
+  const handleSignOut = async () => {
+    await signOut(auth);
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchTrips();
+    }
+  }, [isFocused]);
+
   return (
     <ScreenWrapper>
       <View className="flex-row justify-between items-center p-4">
@@ -83,7 +56,7 @@ const Home = () => {
         </Text>
         <TouchableOpacity
           className="p-2 px-3 bg-white border border-gray-200 rounded-full"
-          onPress={handleSigbOut}
+          onPress={handleSignOut}
         >
           <Text className={Colors.heading}>Logout</Text>
         </TouchableOpacity>
@@ -111,7 +84,7 @@ const Home = () => {
 
         <View style={{ height: 430 }}>
           <FlatList
-            data={items}
+            data={trips}
             numColumns={2}
             columnWrapperStyle={{ justifyContent: "space-between" }}
             ListEmptyComponent={

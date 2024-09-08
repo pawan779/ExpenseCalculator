@@ -8,7 +8,7 @@ export interface UsersState {
 
 interface User {
   email: string;
-  token: string;
+  uid: string;
 }
 
 const initialState: UsersState = {

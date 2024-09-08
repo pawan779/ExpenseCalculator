@@ -11,15 +11,48 @@ import ScreenWrapper from "../components/screenWrapper";
 import { Colors } from "../../theme";
 import BackButton from "../components/backButton";
 import { categories } from "../constant/categoryData";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { VisitedPlacesProps } from "../types/Types";
+import { addDoc, collection } from "firebase/firestore";
+import { expensesRef } from "../config/firebase";
+import LoadingComponent from "../components/loadingComponent";
 
-const AddExpensesScreen = () => {
+interface TripExpensesProps {
+  route: {
+    params: VisitedPlacesProps;
+  };
+}
+
+const AddExpensesScreen: React.FC<TripExpensesProps> = (props) => {
+  const { place, country, id } = props?.route?.params;
   const [title, setTile] = React.useState("");
   const [amount, setAmount] = React.useState("");
   const [category, setCategory] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const user = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
+  const navigation: any = useNavigation();
 
-  const handleAddTrip = () => {
+  const handleAddTrip = async () => {
     if (title && amount && category) {
-      // Add trip to the list
+      try {
+        setLoading(true);
+        let doc = await addDoc(expensesRef, {
+          title,
+          amount,
+          category,
+          tripId: id,
+        });
+        setLoading(false);
+        if (doc.id) {
+          // Redirect to home
+          navigation.goBack();
+        }
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        setLoading(false);
+      }
     } else {
       // Show error message
     }
@@ -88,15 +121,19 @@ const AddExpensesScreen = () => {
             </View>
           </View>
           <View>
-            <TouchableOpacity
-              style={{ backgroundColor: Colors.button }}
-              className="my-6 rounded-full p-3 shadow-sm mx-2"
-              onPress={handleAddTrip}
-            >
-              <Text className="text-center text-white text-lg font-bold">
-                Add Trip
-              </Text>
-            </TouchableOpacity>
+            {loading ? (
+              <LoadingComponent />
+            ) : (
+              <TouchableOpacity
+                style={{ backgroundColor: Colors.button }}
+                className="my-6 rounded-full p-3 shadow-sm mx-2"
+                onPress={handleAddTrip}
+              >
+                <Text className="text-center text-white text-lg font-bold">
+                  Add Trip
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </ScrollView>

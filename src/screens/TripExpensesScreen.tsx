@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -14,27 +14,11 @@ import EmptyList from "../components/emptyList";
 import { useNavigation } from "@react-navigation/native";
 import BackButton from "../components/backButton";
 import ExpenseCard from "../components/expenseCard";
-
-const items: ExpenseProps[] = [
-  {
-    id: 1,
-    title: "ate sanwich",
-    amount: 10,
-    category: "food",
-  },
-  {
-    id: 2,
-    title: " bough a jacket",
-    amount: 100,
-    category: "shopping",
-  },
-  {
-    id: 3,
-    title: "watched a movie",
-    amount: 20,
-    category: "entertainment",
-  },
-];
+import { useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
+import { auth, expensesRef, tripsRef } from "../config/firebase";
+import { query, where } from "firebase/firestore";
+import { getDocs } from "firebase/firestore";
 
 interface TripExpensesProps {
   route: {
@@ -43,8 +27,31 @@ interface TripExpensesProps {
 }
 
 const TripExpensesScreen: React.FC<TripExpensesProps> = (props) => {
-  const { place, country } = props?.route?.params;
+  const { place, country, id } = props?.route?.params;
+  const [expenses, setExpenses] = React.useState<ExpenseProps[]>([]);
+
+  const { user } = useSelector((state: any) => state.user);
   const navigaiton: any = useNavigation();
+  const isFocused = useIsFocused();
+
+  const fetchExpenses = async () => {
+    const q = query(expensesRef, where("tripId", "==", id));
+    const querySnapshot = await getDocs(q);
+    let data: ExpenseProps[] = [];
+
+    querySnapshot.forEach((doc) => {
+      data.push({ ...doc.data(), id: doc.id });
+    });
+
+    setExpenses(data);
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchExpenses();
+    }
+  }, [isFocused]);
+
   return (
     <ScreenWrapper>
       <View className="px-4">
@@ -73,7 +80,9 @@ const TripExpensesScreen: React.FC<TripExpensesProps> = (props) => {
               Recent Trips
             </Text>
             <TouchableOpacity
-              onPress={() => navigaiton.navigate("AddExpense")}
+              onPress={() =>
+                navigaiton.navigate("AddExpense", { id, place, country })
+              }
               className="p-2 px-3 bg-white border border-gray-200 rounded-full"
             >
               <Text className={Colors.heading}>Add Expense</Text>
@@ -82,7 +91,7 @@ const TripExpensesScreen: React.FC<TripExpensesProps> = (props) => {
 
           <View style={{ height: 430 }}>
             <FlatList
-              data={items}
+              data={expenses}
               ListEmptyComponent={
                 <EmptyList message="You haven't recorded any expenses yet" />
               }
