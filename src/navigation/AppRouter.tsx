@@ -42,7 +42,13 @@ const AppRouter = () => {
         <Stack.Screen name="AddExpense" component={AddExpenseScreen} />
         <Stack.Screen name="AddTrip" component={AddTripsScreen} />
         <Stack.Screen name="TripExpenses" component={TripExpensesScreen} />
-        <Stack.Screen name="Chart" component={ChartScreen} />
+        <Stack.Screen
+          name="Chart"
+          component={ChartScreen}
+          options={{
+            presentation: "modal",
+          }}
+        />
       </Stack.Navigator>
     );
   } else {

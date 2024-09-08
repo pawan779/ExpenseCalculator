@@ -66,7 +66,7 @@ const ChartScreen: React.FC<TripExpensesProps> = (props) => {
   return (
     <ScreenWrapper>
       <View className="flex-1 px-4">
-        <View className="relative mt-5">
+        <View className="relative ">
           <View className="absolute top-0 left-0 z-10">
             <BackButton />
           </View>
@@ -82,16 +82,21 @@ const ChartScreen: React.FC<TripExpensesProps> = (props) => {
           <PieChart
             data={category}
             strokeWidth={3}
+            strokeColor={"#0f1d2b"}
             radius={150}
             donut
             sectionAutoFocus
+            focusedPieIndex={0}
             isAnimated
             animationDuration={5000}
+            focusOnPress
+            onPress={(data) => console.log(data)}
             centerLabelComponent={() => (
               <View>
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                  ${parseFloat(totalAmout).toFixed(1)}
+                <Text className="text-md font-bold text-center">
+                  ${totalAmout.toFixed(2)}
                 </Text>
+                <Text className="text-xs text-center">Total</Text>
               </View>
             )}
           />
