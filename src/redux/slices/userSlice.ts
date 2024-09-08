@@ -8,13 +8,13 @@ export interface UsersState {
 
 interface User {
   email: string;
-  password: string;
+  token: string;
 }
 
 const initialState: UsersState = {
   user: {
     email: "",
-    password: "",
+    token: "",
   },
   userLoading: false,
 };

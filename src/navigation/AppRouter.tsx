@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "../screens/Home";
 import SignInScreen from "../screens/SignInScreen";
@@ -8,13 +8,33 @@ import TripExpensesScreen from "../screens/TripExpensesScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import { useSelector } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../config/firebase";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slices/userSlice";
 
 const Stack = createStackNavigator();
 
 const AppRouter = () => {
   const { user } = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
 
-  if (user?.email !== "") {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (u) => {
+      if (u) {
+        dispatch(
+          setUser({ email: u.email, token: u.stsTokenManager.accessToken })
+        );
+      } else {
+        dispatch(setUser({ email: "", token: "" })); // Clear user if signed out
+      }
+    });
+
+    // Cleanup listener on unmount
+    return () => unsubscribe();
+  }, [dispatch]);
+
+  if (user?.token) {
     return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Home" component={Home} />

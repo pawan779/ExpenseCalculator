@@ -4,15 +4,17 @@ import ScreenWrapper from "../components/screenWrapper";
 import { Colors } from "../../theme";
 import BackButton from "../components/backButton";
 import { useNavigation } from "@react-navigation/native";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config/firebase";
+
 const SignInScreen = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const navigation: any = useNavigation();
 
-  const handleAddTrip = () => {
+  const handleAddTrip = async () => {
     if (email && password) {
-      navigation.goBack();
-      navigation.navigate("Home");
+      await signInWithEmailAndPassword(auth, email, password);
     } else {
       // Show error message
       console.log("Please fill all fields");
@@ -44,6 +46,7 @@ const SignInScreen = () => {
               value={email}
               onChangeText={(text) => setEmail(text)}
               placeholder="E.g. expense@gmail.com"
+              autoCapitalize="none"
             />
             <Text className={`${Colors.heading} text-lg font-bold`}>
               Password

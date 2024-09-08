@@ -13,6 +13,8 @@ import { VisitedPlacesProps } from "../types/Types";
 import RecentTrips from "../components/RecentTrips";
 import EmptyList from "../components/emptyList";
 import { useNavigation } from "@react-navigation/native";
+import { signOut } from "firebase/auth";
+import { auth } from "../config/firebase";
 
 const items: VisitedPlacesProps[] = [
   {
@@ -67,6 +69,10 @@ const items: VisitedPlacesProps[] = [
   },
 ];
 
+const handleSigbOut = async () => {
+  await signOut(auth);
+};
+
 const Home = () => {
   const navigaiton: any = useNavigation();
   return (
@@ -75,7 +81,10 @@ const Home = () => {
         <Text className={`${Colors.heading} font-bold text-3xl shadow-sm`}>
           Expenses
         </Text>
-        <TouchableOpacity className="p-2 px-3 bg-white border border-gray-200 rounded-full">
+        <TouchableOpacity
+          className="p-2 px-3 bg-white border border-gray-200 rounded-full"
+          onPress={handleSigbOut}
+        >
           <Text className={Colors.heading}>Logout</Text>
         </TouchableOpacity>
       </View>
