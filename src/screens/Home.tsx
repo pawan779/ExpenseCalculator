@@ -12,6 +12,7 @@ import { Colors } from "../../theme";
 import { VisitedPlacesProps } from "../types/Types";
 import RecentTrips from "../components/RecentTrips";
 import EmptyList from "../components/emptyList";
+import { useNavigation } from "@react-navigation/native";
 
 const items: VisitedPlacesProps[] = [
   {
@@ -67,6 +68,7 @@ const items: VisitedPlacesProps[] = [
 ];
 
 const Home = () => {
+  const navigaiton: any = useNavigation();
   return (
     <ScreenWrapper>
       <View className="flex-row justify-between items-center p-4">
@@ -90,7 +92,10 @@ const Home = () => {
           <Text className={`${Colors.heading} font-bold text-xl`}>
             Recent Trips
           </Text>
-          <TouchableOpacity className="p-2 px-3 bg-white border border-gray-200 rounded-full">
+          <TouchableOpacity
+            onPress={() => navigaiton.navigate("AddTrip")}
+            className="p-2 px-3 bg-white border border-gray-200 rounded-full"
+          >
             <Text className={Colors.heading}>Add Trip</Text>
           </TouchableOpacity>
         </View>
