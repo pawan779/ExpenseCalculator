@@ -70,7 +70,7 @@ const TripExpensesScreen: React.FC<TripExpensesProps> = (props) => {
           <TouchableOpacity
             className="absolute top-0 right-0 z-10"
             onPress={() =>
-              navigaiton.navigate("Chart", { ...expenses, place, country })
+              navigaiton.navigate("Chart", { expenses, place, country })
             }
           >
             <Entypo name="pie-chart" size={24} color="black" />
