@@ -27,7 +27,7 @@ const AppRouter = () => {
       if (u) {
         dispatch(setUser({ email: u.email, uid: u.uid }));
       } else {
-        dispatch(setUser({ email: "", uid: "" })); // Clear user if signed out
+        // dispatch(setUser({ email: "", uid: "" })); // Clear user if signed out
       }
     });
 

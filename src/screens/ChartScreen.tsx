@@ -84,6 +84,7 @@ const ChartScreen: React.FC<TripExpensesProps> = (props) => {
             strokeWidth={3}
             strokeColor={"#0f1d2b"}
             radius={150}
+            innerRadius={70}
             donut
             sectionAutoFocus
             focusedPieIndex={0}
@@ -93,7 +94,7 @@ const ChartScreen: React.FC<TripExpensesProps> = (props) => {
             onPress={(data) => console.log(data)}
             centerLabelComponent={() => (
               <View>
-                <Text className="text-md font-bold text-center">
+                <Text className="text-lg font-bold text-center">
                   ${totalAmout.toFixed(2)}
                 </Text>
                 <Text className="text-xs text-center">Total</Text>

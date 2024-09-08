@@ -17,7 +17,10 @@ import { signOut } from "firebase/auth";
 import { auth, tripsRef } from "../config/firebase";
 import { query, where } from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { setUser } from "../redux/slices/userSlice";
 
 const Home = () => {
   const [trips, setTrips] = React.useState<VisitedPlacesProps[]>([]);
@@ -29,6 +32,10 @@ const Home = () => {
   const fetchTrips = async () => {
     const q = query(tripsRef, where("userId", "==", user.uid));
     const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+      navigation.navigate("AddTrip");
+      return;
+    }
     let data: VisitedPlacesProps[] = [];
 
     querySnapshot.forEach((doc) => {
@@ -37,9 +44,15 @@ const Home = () => {
 
     setTrips(data);
   };
+  const dispatch = useDispatch();
 
   const handleSignOut = async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+      dispatch(setUser({ email: "", uid: "" }));
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
   };
 
   useEffect(() => {
@@ -54,11 +67,12 @@ const Home = () => {
         <Text className={`${Colors.heading} font-bold text-3xl shadow-sm`}>
           TravelTrackr
         </Text>
+
         <TouchableOpacity
-          className="p-2 px-3 bg-white border border-gray-200 rounded-full"
+          className="p-2 bg-red-300 border border-gray-200 rounded-full"
           onPress={handleSignOut}
         >
-          <Text className={Colors.heading}>Logout</Text>
+          <MaterialIcons name="logout" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
 
