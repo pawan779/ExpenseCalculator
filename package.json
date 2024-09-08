@@ -19,6 +19,7 @@
     "expo-constants": "~16.0.2",
     "expo-linear-gradient": "~13.0.2",
     "expo-status-bar": "~1.12.1",
+    "expo-updates": "~0.25.24",
     "firebase": "^10.13.1",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
